@@ -31,18 +31,18 @@ public class Histograma extends JPanel implements Observer{
     
     @Override
     protected void paintComponent(Graphics g){
-       super.paintComponent(g);
-       boolean controlColor=false;
-       int x=10;
-        for (int line:d.getX()) {
-            if(controlColor){
-                g.setColor(Color.GREEN);
-            }else{
+       boolean control=false;
+        int xi=10;
+        int i=0;
+        for(int y:d.getX()){
+            if(i%2==0)
                 g.setColor(Color.RED);
-            }
-            controlColor=!controlColor;
-            g.drawLine(x, 300, x, line);
-            x+=5;
+            else
+                g.setColor(Color.GREEN);
+            g.drawLine(xi,10, xi,10+y);
+            xi+=5;
+            i++;
+            
         }
     }
     
@@ -55,10 +55,19 @@ public class Histograma extends JPanel implements Observer{
         d.addObserver(h);
         f.getContentPane().add(h);
         f.pack();
-        f.setVisible(true);
+        f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);        
+        Thread t=new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                   f.setVisible(true);
+            }
+        });
+        t.start();
     }
     
     @Override
-    public void update(Observable ){
+     public void update(Observable o, Object arg) {
+        this.updateUI();
     }
 }
