@@ -9,6 +9,7 @@ package com.mycompany.observer;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
@@ -46,7 +47,8 @@ public class Histograma extends JPanel implements Observer{
             g.drawLine(xi,10, xi,10+y);
             xi+=5;
             i++;
-            
+            g.setColor(Color.blue);            
+            g.drawString(Arrays.toString(d.getX()), 0, 350);
         }
     }
     

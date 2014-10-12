@@ -18,16 +18,12 @@ import java.util.logging.Logger;
 public class Datos extends Observable {
     int x[];
 
-    public int[] getX() {
-        return x;
-    }
     public Datos(){
     x=new int[100];
         Random r = new Random((System.currentTimeMillis()));
         for (int i = 0; i < x.length; i++) {
             x[i]=r.nextInt(200);            
-        }
-       //this.ordenarDatos();
+        }      
     }
     public void ordenarDatos(){
         Boolean b=true;
@@ -50,5 +46,8 @@ public class Datos extends Observable {
             }
             
         }
+    }
+    public int[] getX() {
+        return x;
     }
 }
