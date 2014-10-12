@@ -18,14 +18,14 @@ import java.util.logging.Logger;
 public class Datos extends Observable {
     int x[];
 
-    public Datos(){
-    x=new int[100];
+    public Datos(int n){
+    x=new int[n];
         Random r = new Random((System.currentTimeMillis()));
         for (int i = 0; i < x.length; i++) {
             x[i]=r.nextInt(200);            
         }      
     }
-    public void ordenarDatos(){
+    public void ordenarDatosBubble(){
         Boolean b=true;
         for (int i = 0; i < x.length; i++) {
             for (int j=0;j<x.length-1;j++){
