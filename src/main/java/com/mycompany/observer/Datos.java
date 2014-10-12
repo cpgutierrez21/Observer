@@ -47,6 +47,11 @@ public class Datos extends Observable {
             
         }
     }
+    
+    public void ordenarDatosQuick(){
+       Boolean b=true;
+       
+    }
     public int[] getX() {
         return x;
     }

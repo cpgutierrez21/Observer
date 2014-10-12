@@ -11,6 +11,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
@@ -96,13 +98,18 @@ public class Histograma extends JPanel implements Observer{
         });
         t.start();
         
-        Thread orden = new Thread(new Runnable(){
+        final Thread orden = new Thread(new Runnable(){
         @Override
         public void run(){d.ordenarDatosBubble()
             ;}
-        });
-       //orden.start();       
+        });             
         
+        btnOrdenar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                orden.start();
+            }
+        });
         
         try {
             Thread.currentThread().join();
