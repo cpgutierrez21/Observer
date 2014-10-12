@@ -11,6 +11,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -25,12 +27,14 @@ public class Histograma extends JPanel implements Observer{
     public Histograma(Datos d) {
        //super.setSize(400, 400); //To change body of generated methods, choose Tools | Templates.
        this.d=d;
-        super.setBounds(0, 0, 400, 400);
-       super.setMinimumSize(new Dimension(400, 400));      
+       this.setSize(new Dimension(400, 400));
+       this.setMinimumSize(new Dimension(400, 400));      
+       this.setPreferredSize(new Dimension(400, 400));
     }
     
     @Override
     protected void paintComponent(Graphics g){
+        super.paintComponent(g);
        boolean control=false;
         int xi=10;
         int i=0;
@@ -47,9 +51,7 @@ public class Histograma extends JPanel implements Observer{
     }
     
     public static void main(String[] args) {
-        JFrame f= new JFrame("Histograma");
-        f.setLocationRelativeTo(null);  
-        f.setPreferredSize(new Dimension(400, 350));
+        final JFrame f= new JFrame("Histograma");        
         final Datos d= new Datos();
         Histograma h = new Histograma(d);
         d.addObserver(h);
@@ -64,6 +66,17 @@ public class Histograma extends JPanel implements Observer{
             }
         });
         t.start();
+        
+        Thread orden = new Thread(new Runnable(){
+        @Override
+        public void run(){d.ordenarDatos();}
+        });
+        orden.start();
+        try {
+            Thread.currentThread().join();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Histograma.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     @Override
