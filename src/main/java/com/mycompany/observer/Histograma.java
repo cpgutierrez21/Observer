@@ -19,7 +19,6 @@ import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -65,7 +64,7 @@ public class Histograma extends JPanel implements Observer{
         f.setLayout(new GridBagLayout());
         GridBagConstraints coord = new GridBagConstraints();        
         
-        int cantN=0;
+        int cantN;
         Object objCant = JOptionPane.showInputDialog("Ingrese cantidad de números a ordenar");
         cantN=Integer.parseInt(objCant.toString());
         
@@ -74,8 +73,9 @@ public class Histograma extends JPanel implements Observer{
         f.add(jlbtitulo,coord);
         
         final Datos d= new Datos(cantN);
-        Histograma h = new Histograma(d);
-        d.addObserver(h);                          
+        final Histograma h = new Histograma(d);
+                      
+        //d.addObserver(h);                          
         coord.gridx=0;coord.gridy=20;coord.gridwidth=60;coord.gridheight=50;
         f.add(h,coord); 
         
@@ -94,8 +94,9 @@ public class Histograma extends JPanel implements Observer{
         f.add(btnOrdenarS,coord);
         
         f.pack();
-        f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);        
+        f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  
         
+               
         Thread t=new Thread(new Runnable() {
             @Override
             public void run() {f.setVisible(true);}
@@ -104,39 +105,43 @@ public class Histograma extends JPanel implements Observer{
         
         final Thread ordenB = new Thread(new Runnable(){
         @Override
-        public void run(){d.ordenarDatosBubble()
-            ;}
+        public void run(){
+        BCommand command=new BCommand(d.getX());       
+        command.addObserver(h);
+        command.Ejecutar();}
         }); 
         
         final Thread ordenQ = new Thread(new Runnable(){
         @Override
-        public void run(){d.ordenarDatosQuick(0,d.getX().length-1)
-            ;}
+        public void run(){
+            QCommand command=new QCommand(d.getX());
+            command.addObserver(h);
+            command.Ejecutar();}
         });
         
         final Thread ordenS = new Thread(new Runnable(){
         @Override
-        public void run(){d.ordenarDatosShell()
-            ;}
+        public void run(){
+            SCommand command=new SCommand(d.getX());
+            command.addObserver(h);
+            command.Ejecutar();}
         });
         
         btnOrdenarB.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {                
+            public void actionPerformed(ActionEvent e) {
                 ordenB.start();
             }
         });
-        
         btnOrdenarQ.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {                
+            public void actionPerformed(ActionEvent e) {
                 ordenQ.start();
             }
-        });
-        
+        });        
         btnOrdenarS.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {                
+            public void actionPerformed(ActionEvent e) {
                 ordenS.start();
             }
         });

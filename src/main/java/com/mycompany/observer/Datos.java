@@ -8,8 +8,7 @@ package com.mycompany.observer;
 
 import java.util.Observable;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  *
@@ -25,7 +24,11 @@ public class Datos extends Observable {
             x[i]=r.nextInt(200);            
         }      
     }
-    public void ordenarDatosBubble(){
+    
+     public int[] getX() {
+        return x;
+    }
+   /** public void ordenarDatosBubble(){
         Boolean b=true;
         for (int i = 0; i < x.length; i++) {
             for (int j=0;j<x.length-1;j++){
@@ -43,7 +46,7 @@ public class Datos extends Observable {
     }
     
     public void ordenarDatosQuick(int lowerIndex, int higherIndex){
-       Boolean b=true;
+      /* Boolean b=true;
        int i = lowerIndex;
        int j = higherIndex;
        int pivot = x[lowerIndex+(higherIndex-lowerIndex)/2];
@@ -78,7 +81,7 @@ public class Datos extends Observable {
     }
     
     public void ordenarDatosShell(){
-       Boolean b=true;
+      /* Boolean b=true;
        int increment = x.length / 2;
 	while (increment > 0) {
 		for (int i = increment; i < x.length; i++) {
@@ -104,8 +107,6 @@ public class Datos extends Observable {
                         Logger.getLogger(Datos.class.getName()).log(Level.SEVERE, null, ex);
                     }}
 	}
-    }
-    public int[] getX() {
-        return x;
-    }
+    }**/
+   
 }
