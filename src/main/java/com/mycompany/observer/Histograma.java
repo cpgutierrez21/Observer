@@ -80,14 +80,18 @@ public class Histograma extends JPanel implements Observer{
         f.add(h,coord); 
         
         JLabel jlbmensaje = new JLabel("Seleccione el método deseado: ");
-        coord.gridx=0;coord.gridy=70;coord.gridwidth=20;coord.gridheight=10;
+        coord.gridx=0;coord.gridy=70;coord.gridwidth=60;coord.gridheight=10;
         f.add(jlbmensaje,coord);
-        JComboBox<String> cmbMetodos = new JComboBox<>(new String[]{"...","BubbleSort","QuickSort","ShellSort"});
-        coord.gridx=20;coord.gridy=70;coord.gridwidth=20;coord.gridheight=10;
-        f.add(cmbMetodos,coord);
-        JButton btnOrdenar = new JButton("ORDENAR");
-        coord.gridx=40;coord.gridy=70;coord.gridwidth=20;coord.gridheight=10;
-        f.add(btnOrdenar,coord);
+        //final JComboBox<String> cmbMetodos = new JComboBox<>(new String[]{"...","BubbleSort","QuickSort","ShellSort"});
+        JButton btnOrdenarB = new JButton("BubbleSort");
+        coord.gridx=0;coord.gridy=80;coord.gridwidth=30;coord.gridheight=10;        
+        f.add(btnOrdenarB,coord);
+        JButton btnOrdenarQ = new JButton("QuickSort");
+        coord.gridx=30;coord.gridy=80;coord.gridwidth=30;coord.gridheight=10;        
+        f.add(btnOrdenarQ,coord);
+        JButton btnOrdenarS = new JButton("ShellSort");
+        coord.gridx=60;coord.gridy=80;coord.gridwidth=30;coord.gridheight=10;        
+        f.add(btnOrdenarS,coord);
         
         f.pack();
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);        
@@ -98,16 +102,42 @@ public class Histograma extends JPanel implements Observer{
         });
         t.start();
         
-        final Thread orden = new Thread(new Runnable(){
+        final Thread ordenB = new Thread(new Runnable(){
         @Override
         public void run(){d.ordenarDatosBubble()
             ;}
-        });             
+        }); 
         
-        btnOrdenar.addActionListener(new ActionListener() {
+        final Thread ordenQ = new Thread(new Runnable(){
+        @Override
+        public void run(){d.ordenarDatosQuick(0,d.getX().length-1)
+            ;}
+        });
+        
+        final Thread ordenS = new Thread(new Runnable(){
+        @Override
+        public void run(){d.ordenarDatosShell()
+            ;}
+        });
+        
+        btnOrdenarB.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                orden.start();
+            public void actionPerformed(ActionEvent e) {                
+                ordenB.start();
+            }
+        });
+        
+        btnOrdenarQ.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {                
+                ordenQ.start();
+            }
+        });
+        
+        btnOrdenarS.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {                
+                ordenS.start();
             }
         });
         

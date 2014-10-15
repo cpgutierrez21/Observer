@@ -30,27 +30,80 @@ public class Datos extends Observable {
         for (int i = 0; i < x.length; i++) {
             for (int j=0;j<x.length-1;j++){
                 if(x[j]<x[j+1]){
-                int temp=x[j];
-                x[j]=x[j+1];
-                x[j+1]=temp;
+                exchangeNumbers(j, j+1);
                 this.setChanged();
-                this.notifyObservers(temp);
+                this.notifyObservers(j);
                 }
                 synchronized (b){
                     try {
                         b.wait(5);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(Datos.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-            
-        }
+                    }}} }
     }
     
-    public void ordenarDatosQuick(){
+    public void ordenarDatosQuick(int lowerIndex, int higherIndex){
        Boolean b=true;
-       
+       int i = lowerIndex;
+       int j = higherIndex;
+       int pivot = x[lowerIndex+(higherIndex-lowerIndex)/2];
+       while (i <= j) {
+       while (x[i] > pivot) {
+                i++;
+        }
+       while (x[j] < pivot) {j--;}
+       if (i <= j) {
+                exchangeNumbers(i, j);
+                this.setChanged();
+                this.notifyObservers(j);
+                i++; j--;
+            }
+       synchronized(b){
+          try {
+                    b.wait(5);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Datos.class.getName()).log(Level.SEVERE, null, ex);
+                    } }
+       }
+        if (lowerIndex < j)
+            ordenarDatosQuick(lowerIndex, j);
+        if (i < higherIndex)
+            ordenarDatosQuick(i, higherIndex);
+    }
+    
+    private void exchangeNumbers(int i, int j) {
+        int temp = x[i];
+        x[i] = x[j];
+        x[j] = temp;
+    }
+    
+    public void ordenarDatosShell(){
+       Boolean b=true;
+       int increment = x.length / 2;
+	while (increment > 0) {
+		for (int i = increment; i < x.length; i++) {
+			int j = i;
+			int temp = x[i];
+			while (j >= increment && x[j - increment] < temp) {
+				x[j] = x[j - increment];
+				j = j - increment;
+			}
+			x[j] = temp;
+                       this.setChanged();
+                       this.notifyObservers(temp); 
+		}                
+		if (increment == 2) {
+			increment = 1;
+		} else {
+			increment *= (5.0 / 11);
+		}
+                synchronized (b){
+                    try {
+                        b.wait(5);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Datos.class.getName()).log(Level.SEVERE, null, ex);
+                    }}
+	}
     }
     public int[] getX() {
         return x;
