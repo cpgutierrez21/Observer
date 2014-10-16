@@ -27,7 +27,10 @@ import javax.swing.JPanel;
 public class Histograma extends JPanel implements Observer{
 
     Datos d;
-    boolean control=false;
+    //boolean control=false;
+    static BCommand burbuja;
+    static SCommand shell;
+    static QCommand quick;
     public Histograma(Datos d) {
        this.d=d;
        this.setSize(new Dimension(400, 400));
@@ -74,15 +77,14 @@ public class Histograma extends JPanel implements Observer{
         
         final Datos d= new Datos(cantN);
         final Histograma h = new Histograma(d);
-                      
-        //d.addObserver(h);                          
+        final Invoker in = new Invoker();
+                                        
         coord.gridx=0;coord.gridy=20;coord.gridwidth=60;coord.gridheight=50;
         f.add(h,coord); 
         
         JLabel jlbmensaje = new JLabel("Seleccione el método deseado: ");
         coord.gridx=0;coord.gridy=70;coord.gridwidth=60;coord.gridheight=10;
-        f.add(jlbmensaje,coord);
-        //final JComboBox<String> cmbMetodos = new JComboBox<>(new String[]{"...","BubbleSort","QuickSort","ShellSort"});
+        f.add(jlbmensaje,coord);        
         JButton btnOrdenarB = new JButton("BubbleSort");
         coord.gridx=0;coord.gridy=80;coord.gridwidth=30;coord.gridheight=10;        
         f.add(btnOrdenarB,coord);
@@ -93,9 +95,12 @@ public class Histograma extends JPanel implements Observer{
         coord.gridx=60;coord.gridy=80;coord.gridwidth=30;coord.gridheight=10;        
         f.add(btnOrdenarS,coord);
         
-        f.pack();
-        f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  
+        burbuja = new BCommand(d.getX());
+        shell = new SCommand(d.getX());
+        quick = new QCommand(d.getX());
         
+        f.pack();
+        f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);          
                
         Thread t=new Thread(new Runnable() {
             @Override
@@ -105,26 +110,28 @@ public class Histograma extends JPanel implements Observer{
         
         final Thread ordenB = new Thread(new Runnable(){
         @Override
-        public void run(){
-        BCommand command=new BCommand(d.getX());       
-        command.addObserver(h);
-        command.Ejecutar();}
-        }); 
+        public void run(){       
+           in.setCommand(burbuja);
+           burbuja.addObserver(h);
+           in.Ordenar();
+        }}); 
         
         final Thread ordenQ = new Thread(new Runnable(){
         @Override
-        public void run(){
-            QCommand command=new QCommand(d.getX());
-            command.addObserver(h);
-            command.Ejecutar();}
+        public void run(){           
+            in.setCommand(quick);
+            quick.addObserver(h);
+            in.Ordenar();
+                    }
         });
         
         final Thread ordenS = new Thread(new Runnable(){
         @Override
-        public void run(){
-            SCommand command=new SCommand(d.getX());
-            command.addObserver(h);
-            command.Ejecutar();}
+        public void run(){         
+            in.setCommand(shell);
+            shell.addObserver(h);
+            in.Ordenar();
+                    }
         });
         
         btnOrdenarB.addActionListener(new ActionListener() {

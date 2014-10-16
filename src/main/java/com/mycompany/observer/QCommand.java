@@ -20,10 +20,11 @@ int[] x;
         this.x=x;
     }
     @Override
-    public void Ejecutar() {
-        Boolean b=true;
-       int lowerIndex = 0;
-       int higherIndex = x.length-1;
+    public void Ejecutar(){
+        EjecutarQ(0,this.x.length-1);
+    }
+    public void EjecutarQ(int lowerIndex, int higherIndex) {
+        Boolean b=true;      
        int i = lowerIndex;
        int j = higherIndex;
        int pivot = x[lowerIndex+(higherIndex-lowerIndex)/2];
@@ -45,12 +46,10 @@ int[] x;
                         Logger.getLogger(Datos.class.getName()).log(Level.SEVERE, null, ex);
                     } }
        }
-        if (lowerIndex < j)
-            higherIndex=j;
-            Ejecutar();
-        if (i < higherIndex)
-            lowerIndex=i;
-            Ejecutar();
+        if (lowerIndex < j)            
+            EjecutarQ(lowerIndex,j);
+        if (i < higherIndex)            
+            EjecutarQ(i,higherIndex);
     }
     private void exchangeNumbers(int i, int j) {
         int temp = x[i];
