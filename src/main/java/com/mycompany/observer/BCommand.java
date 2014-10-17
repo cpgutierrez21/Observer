@@ -6,6 +6,7 @@
 
 package com.mycompany.observer;
 
+import java.util.Comparator;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,10 +24,13 @@ public class BCommand extends Observable implements ICommand{
     }
     @Override
     public void Ejecutar() {
+        int comp;
         Boolean b=true;
         for (int i = 0; i < x.length; i++) {
             for (int j=0;j<x.length-1;j++){
-                if(x[j]<x[j+1]){
+                comp=Integer.compare(x[j], x[j+1]);
+//                if(x[j]<x[j+1]){
+                if(comp==-1){
                 exchangeNumbers(j, j+1);
                 this.setChanged();
                 this.notifyObservers(j);
@@ -43,5 +47,6 @@ public class BCommand extends Observable implements ICommand{
         x[i] = x[j];
         x[j] = temp;
     }
+    
     
 }
